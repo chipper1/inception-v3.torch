@@ -106,6 +106,9 @@ local function Softmax(net)
   local m = nn.Linear(weights:size(2), weights:size(1))
   m.weight:copy(weights)
   m.bias:copy(biases)
+  for k,v in ipairs{'weight', 'bias', 'gradWeight', 'gradBias'} do
+     m[v] = m[v]:narrow(1,2,1000)
+  end
   net:add(m)
   net:add(SoftMax())
 end
